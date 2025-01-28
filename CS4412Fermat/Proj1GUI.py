@@ -116,6 +116,38 @@ class Proj1GUI(QWidget):
         except Exception as e:
             self.outputF.setText('<i>ERROR:</i> inputs must be integers!')
 
+def testClicked(self):
+    try:
+        n = int(self.input_n.text())
+        k = int(self.input_k.text())
+
+        if n <= 1 or k <= 0:
+            raise ValueError("Ensure n > 1 and k > 0.")
+
+        # This is the call to the pass-through function that gets your results,
+        # from both the Fermat and Miller-Rabin tests you will implement
+        fermat, mr = prime_test(n, k)
+
+        # Output results from Fermat and compute the appropriate error bound, if necessary
+        if fermat == 'prime':
+            prob = fprobability(k)
+            self.outputF.setText(
+                f'<i>Fermat Result:</i> {n} <b>is prime</b> with probability {prob:.15f}')
+        else:  # Should be 'composite'
+            self.outputF.setText(f'<i>Fermat Result:</i> {n} is <b>not prime</b>.')
+
+        # Output results from Miller-Rabin and compute the appropriate error bound, if necessary
+        if mr == 'prime':
+            prob = mprobability(k)
+            self.outputMR.setText(
+                f'<i>MR Result:</i> {n} <b>is prime</b> with probability {prob:.15f}')
+        else:  # Should be 'composite'
+            self.outputMR.setText(f'<i>MR Result:</i> {n} is <b>not prime</b>.')
+
+    except ValueError as e:
+        self.outputF.setText(f'<i>ERROR:</i> {str(e)}')
+        self.outputMR.clear()
+
 
 if __name__ == '__main__':
     # This line allows CNTL-C in the terminal to kill the program

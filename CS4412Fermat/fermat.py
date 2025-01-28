@@ -6,16 +6,26 @@ def prime_test(N, k):
     return fermat(N, k), miller_rabin(N, k)
 
 
-def mod_exp(x, y, N):
+#def mod_exp(x, y, N):
     # Based on the pseudoocde in Figure 1.4
-    if y == 0:
-        return 1
+ #   if y == 0:
+  #      return 1
 
-    z = mod_exp(x, y//2, N)
-    if (y % 2 == 0):
-        return z**2 % N
+   # z = mod_exp(x, y//2, N)
+    #if (y % 2 == 0):
+     #   return z**2 % N
 
-    return (x*z**2) % N
+    #return (x*z**2) % N
+
+def mod_exp(x, y, N):
+    result = 1
+    base = x % N
+    while y > 0:
+        if (y % 2 == 1):  # If y is odd, multiply the base with the result
+            result = (result * base) % N
+        base = (base * base) % N  # Square the base
+        y = y // 2
+    return result
 
 
 def fprobability(k):
@@ -48,6 +58,8 @@ def fermat(N, k):
             return 'composite'
     return 'prime'
 
+def fermat_probability(k):
+    return 1 - (1 / (2 ** k))
 
 def miller_rabin(N, k):
 
